@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema( {
         unique: true,
     },
     name: String,
+    image: String,
+    email: String,
     password: {
         type: String,
         minLength: 3,
