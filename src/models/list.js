@@ -1,6 +1,6 @@
 const mongoose = require( 'mongoose' )
 
-const blogSchema = new mongoose.Schema( {
+const listSchema = new mongoose.Schema( {
     title: {
         type: String,
         required: true,
@@ -23,7 +23,7 @@ const blogSchema = new mongoose.Schema( {
     }
 } )
 
-blogSchema.set( 'toJSON', {
+listSchema.set( 'toJSON', {
     transform: ( document, returnedObject ) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
@@ -31,5 +31,5 @@ blogSchema.set( 'toJSON', {
     }
 } )
 
-const Blog = mongoose.model( 'Blog', blogSchema )
-module.exports = Blog
+const List = mongoose.model( 'List', listSchema )
+module.exports = List

@@ -1,26 +1,26 @@
-const Blog = require( '../../models/blog' )
+const List = require( '../../models/list' )
 const User = require( '../../models/user' )
 const bcrypt = require( 'bcrypt' )
-const initialBlogs = require( '../db/blogs.json' )
+const initialLists = require( '../db/lists.json' )
 const initialUsers = require( '../db/users.json' )
 
 const nonExistingId = async () => {
-    const newBlog = new Blog( {
+    const newList = new List( {
         title: 'async/await simplifies making async calls',
         author: 'FullStackOpen',
         url: 'www.fullstackopen.com',
         likes: 3
     } )
 
-    await newBlog.save()
-    await newBlog.deleteOne()
+    await newList.save()
+    await newList.deleteOne()
 
-    return newBlog._id.toString()
+    return newList._id.toString()
 }
 
-const blogsInDb = async () => {
-    const blogs = await Blog.find( {} )
-    return blogs.map( blog => blog.toJSON() )
+const listsInDb = async () => {
+    const lists = await List.find( {} )
+    return lists.map( list => list.toJSON() )
 }
 
 const usersInDb = async () => {
@@ -44,9 +44,9 @@ const createUser = async () => {
 }
 
 module.exports = {
-    initialBlogs,
+    initialLists,
     nonExistingId,
-    blogsInDb,
+    listsInDb,
     initialUsers,
     createUser,
     usersInDb,

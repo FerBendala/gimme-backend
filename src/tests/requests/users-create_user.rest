@@ -4,5 +4,7 @@ Content-Type: application/json
 {
     "user": "fernando bendala",
     "username": "fer bendala",
-    "password": "estaesunaContraseñad3l0m4sExtraña"
+    "password": "estaesunaContraseñad3l0m4sExtraña",
+    "picture": "https://lh3.googleusercontent.com/a/AAcHTteeAQXPBlYB8DB3V6h9Q9xsYiWedK8PF0Hr29mwrS-32w=s96-c",
+    "email": "bendalier@gmail.com"
 }

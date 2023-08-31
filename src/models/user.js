@@ -10,17 +10,22 @@ const userSchema = new mongoose.Schema( {
         unique: true,
     },
     name: String,
-    image: String,
-    email: String,
+    picture: String,
+    email: {
+        type: String,
+        minLength: 3,
+        required: true,
+        unique: true,
+    },
     password: {
         type: String,
         minLength: 3,
         required: true,
     },
-    blogs: [
+    lists: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Blog',
+            ref: 'List',
         }
     ],
 } )

@@ -1,21 +1,21 @@
-const blogsRouter = require( 'express' ).Router()
-const Blog = require( '../models/blog' )
+const listsRouter = require( 'express' ).Router()
+const List = require( '../models/list' )
 const User = require( '../models/user' )
 const jwt = require( 'jsonwebtoken' )
 
 
-blogsRouter.get( '/', async ( request, response ) => {
-    const blogs = await Blog
+listsRouter.get( '/', async ( request, response ) => {
+    const lists = await List
         .find( {} )
         .populate( 'user', {
             username: 1,
             name: 1,
         } )
 
-    response.json( blogs )
+    response.json( lists )
 } )
 
-blogsRouter.post( '/', async ( request, response ) => {
+listsRouter.post( '/', async ( request, response ) => {
     // Set variables
     const token = request.token
     const { title, author, url, likes } = request.body
@@ -32,8 +32,8 @@ blogsRouter.post( '/', async ( request, response ) => {
     const tokenWithUserId = decodedToken.id
     const user = await User.findById( tokenWithUserId )
 
-    // Set new Blog Schema
-    const newBlog = new Blog( {
+    // Set new List Schema
+    const newList = new List( {
         title: title,
         author: author,
         url: url,
@@ -41,24 +41,24 @@ blogsRouter.post( '/', async ( request, response ) => {
         user: user._id
     } )
 
-    const savedBlog = await newBlog.save()
-    user.blogs = user.blogs.concat( savedBlog._id )
+    const savedList = await newList.save()
+    user.lists = user.lists.concat( savedList._id )
     await user.save()
 
-    response.json( savedBlog )
+    response.json( savedList )
 } )
 
-blogsRouter.get( '/:id', async ( request, response ) => {
-    const blog = await Blog.findById( request.params.id )
+listsRouter.get( '/:id', async ( request, response ) => {
+    const list = await List.findById( request.params.id )
 
-    // Return blog if exists
-    if ( blog )
-        response.json( blog )
+    // Return list if exists
+    if ( list )
+        response.json( list )
     else
         response.status( 404 ).end()
 } )
 
-blogsRouter.delete( '/:id', async ( request, response ) => {
+listsRouter.delete( '/:id', async ( request, response ) => {
     // Set variables
     const token = request.token
 
@@ -69,17 +69,17 @@ blogsRouter.delete( '/:id', async ( request, response ) => {
             .status( 401 )
             .json( { error: 'invalid user' } )
 
-    // Delete blog if the userId is matching with decoded token id
+    // Delete list if the userId is matching with decoded token id
     const tokenWithUserId = decodedToken.id
     if ( tokenWithUserId.toString() ) {
-        await Blog.findByIdAndRemove( request.params.id )
+        await List.findByIdAndRemove( request.params.id )
         response.status( 204 ).end()
     } else {
         return response.status( 401 ).json( { error: 'unauthorized' } )
     }
 } )
 
-blogsRouter.put( '/:id', async ( request, response ) => {
+listsRouter.put( '/:id', async ( request, response ) => {
     // Set variables
     const token = request.token
     const { title, author, url, likes } = request.body
@@ -91,20 +91,20 @@ blogsRouter.put( '/:id', async ( request, response ) => {
             .status( 401 )
             .json( { error: 'token missing or invalid' } )
 
-    // Get elements from request and set new data for Blog Schema
+    // Get elements from request and set new data for List Schema
     const tokenWithUserId = decodedToken.id
-    const existingBlog = { title, author, url, likes }
+    const existingList = { title, author, url, likes }
 
-    // Update blog if the userId is matching with decoded token id
+    // Update list if the userId is matching with decoded token id
     if ( tokenWithUserId.toString() ) {
-        const updatedBlog = await Blog
+        const updatedList = await List
             .findByIdAndUpdate(
                 request.params.id,
-                existingBlog,
+                existingList,
                 { new: true }
             )
 
-        response.json( updatedBlog )
+        response.json( updatedList )
     } else {
         return response
             .status( 401 )
@@ -112,4 +112,4 @@ blogsRouter.put( '/:id', async ( request, response ) => {
     }
 } )
 
-module.exports = blogsRouter
+module.exports = listsRouter

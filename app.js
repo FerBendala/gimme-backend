@@ -5,7 +5,7 @@ const app = express()
 const cors = require( 'cors' )
 const usersRouter = require( './src/controllers/users' )
 const loginRouter = require( './src/controllers/login' )
-const blogsRouter = require( './src/controllers/blogs' )
+const listsRouter = require( './src/controllers/lists' )
 const middleware = require( './src/utils/middleware' )
 const logger = require( './src/utils/logger' )
 const mongoose = require( 'mongoose' )
@@ -32,7 +32,7 @@ app.use( middleware.tokenExtractor )
 
 app.use( '/api/users', usersRouter )
 app.use( '/api/login', loginRouter )
-app.use( '/api/blogs', middleware.userExtractor, blogsRouter )
+app.use( '/api/lists', middleware.userExtractor, listsRouter )
 
 if ( process.env.NODE_ENV === 'test' ) {
     const testingRouter = require( './controllers/testing' )
